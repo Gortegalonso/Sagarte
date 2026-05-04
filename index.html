@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artista · Escultura & Restauración</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Cormorant Garamond (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Pannellum 360° Viewer CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            stone: {
+              50:  '#F9F8F6',
+              100: '#F2F0EC',
+              200: '#E5E0D8',
+              300: '#C8BFB0',
+              400: '#A99D8E',
+              500: '#8C7D6C',
+              600: '#6E6050',
+              700: '#504438',
+              800: '#332B22',
+              900: '#1A1410',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ─── Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F9F8F6;
+      color: #1A1410;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Navigation ────────────────────────────────── */
+    #navbar {
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(249, 248, 246, 0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    }
+
+    .nav-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #504438;
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+    .nav-link:hover {
+      color: #1A1410;
+      border-bottom-color: #1A1410;
+    }
+
+    /* ─── Hero ──────────────────────────────────────── */
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: #1A1410;
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: #6E6050;
+      letter-spacing: 0.01em;
+    }
+    .hero-line {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, #C8BFB0, transparent);
+      margin: 0 auto;
+    }
+
+    /* ─── Section titles ────────────────────────────── */
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #A99D8E;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      color: #1A1410;
+    }
+
+    /* ─── Gallery grid ──────────────────────────────── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Gallery item — PURCHASE HOOK READY */
+    /*
+      .gallery-item → contenedor de cada obra.
+      Añadir aquí el botón de Stripe Checkout cuando esté listo.
+      Ver comentario HTML dentro del elemento para la ubicación exacta.
+    */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: #E5E0D8;
+      cursor: pointer;
+      aspect-ratio: 3/4;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.5s ease;
+      filter: saturate(0.85);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: saturate(1);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,20,16,0.75) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-overlay-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.2rem;
+      color: #F9F8F6;
+      line-height: 1.2;
+      transform: translateY(8px);
+      transition: transform 0.4s ease 0.05s;
+    }
+    .gallery-item:hover .gallery-overlay-title {
+      transform: translateY(0);
+    }
+
+    .gallery-overlay-year {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: #C8BFB0;
+      margin-top: 0.25rem;
+      transform: translateY(8px);
+      transition: transform 0.4s ease 0.08s;
+    }
+    .gallery-item:hover .gallery-overlay-year {
+      transform: translateY(0);
+    }
+
+    /*
+      .buy-btn-placeholder → clase reservada para el botón de compra.
+      Stripe Checkout se integrará aquí en una etapa futura.
+    */
+    .buy-btn-placeholder {
+      /* Estilos futuros del botón de compra */
+      /* display: none; — activar cuando se integre Stripe */
+    }
+
+    /* ─── Divider ────────────────────────────────────── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #C8BFB0;
+    }
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #E5E0D8;
+    }
+
+    /* ─── 360° Tour ──────────────────────────────────── */
+    #panorama {
+      width: 100%;
+      height: 520px;
+      background: #332B22;
+      position: relative;
+    }
+    @media (max-width: 640px) {
+      #panorama { height: 300px; }
+    }
+
+    .tour-caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #A99D8E;
+      text-align: center;
+      margin-top: 1.25rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── Contact ────────────────────────────────────── */
+    .contact-icon-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: #504438;
+      transition: color 0.25s ease;
+    }
+    .contact-icon-link:hover { color: #1A1410; }
+
+    .contact-icon-circle {
+      width: 52px;
+      height: 52px;
+      border: 1px solid #C8BFB0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .contact-icon-link:hover .contact-icon-circle {
+      border-color: #504438;
+      background: #F2F0EC;
+    }
+
+    .contact-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ─── Footer ─────────────────────────────────────── */
+    footer {
+      border-top: 1px solid #E5E0D8;
+    }
+
+    /* ─── Fade-in on scroll ──────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Pannellum overrides ────────────────────────── */
+    .pnlm-container { border-radius: 0; }
+    .pnlm-load-box { background: #1A1410; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       NAVEGACIÓN
+  ══════════════════════════════════════════════════ -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
+    <a href="#hero" class="font-display text-sm tracking-widest text-stone-700 uppercase" style="font-size:0.72rem; letter-spacing:0.22em;">
+      <!-- REEMPLAZAR con el nombre real del artista -->
+      M. Alcántara
+    </a>
+    <div class="flex items-center gap-8">
+      <a href="#trabajos" class="nav-link">Trabajos</a>
+      <a href="#tour" class="nav-link">Tour 360°</a>
+      <a href="#contacto" class="nav-link">Contacto</a>
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════ -->
+  <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16 relative">
+
+    <!-- Grain texture overlay -->
+    <div class="absolute inset-0 pointer-events-none" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22><filter id=%22noise%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/><feColorMatrix type=%22saturate%22 values=%220%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.035%22/></svg>'); opacity:0.6;"></div>
+
+    <p class="section-label mb-8 reveal">Escultura &amp; Restauración de Edificios</p>
+
+    <h1 class="hero-name reveal" style="transition-delay:0.1s">
+      <!-- REEMPLAZAR con el nombre real del artista -->
+      Manuel<br/>Alcántara
+    </h1>
+
+    <p class="hero-tagline mt-6 max-w-md reveal" style="transition-delay:0.2s">
+      <!-- REEMPLAZAR con la frase real del artista -->
+      La piedra no miente. Solo aguarda quien sepa escucharla.
+    </p>
+
+    <div class="hero-line mt-16 reveal" style="transition-delay:0.3s"></div>
+
+    <a href="#trabajos"
+       class="mt-8 text-xs tracking-widest uppercase text-stone-400 hover:text-stone-700 transition-colors reveal"
+       style="transition-delay:0.4s; font-size:0.65rem; letter-spacing:0.2em;">
+      Ver trabajos ↓
+    </a>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════
+       GALERÍA — ESCULTURA
+  ══════════════════════════════════════════════════ -->
+  <section id="trabajos" class="px-6 md:px-16 lg:px-24 py-28">
+
+    <div class="mb-16 reveal">
+      <p class="section-label mb-3">Colección</p>
+      <h2 class="section-title">Escultura</h2>
+    </div>
+
+    <div class="gallery-grid">
+
+      <!-- ── Obra 1 ──────────────────────────────── -->
+      <div class="gallery-item reveal">
+        <!--
+          IMAGEN: Reemplazar el src con el enlace directo de Google Drive.
+          Formato Drive: https://drive.google.com/uc?export=view&id=TU_FILE_ID
+        -->
+        <img
+          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"
+          alt="Figura en mármol blanco"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Figura en Mármol</span>
+          <span class="gallery-overlay-year">2023 · Mármol de Macael</span>
+
+          <!--
+            ══ STRIPE CHECKOUT — BOTÓN DE COMPRA FUTURO ══
+            Descomentar y conectar con Stripe cuando esté listo:
+
+            <button class="buy-btn-placeholder mt-3 px-4 py-2 bg-stone-50 text-stone-900
+                           text-xs tracking-widest uppercase hover:bg-white transition">
+              Adquirir obra
+            </button>
+          -->
+        </div>
+      </div>
+
+      <!-- ── Obra 2 ──────────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.05s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=600&q=80"
+          alt="Torso abstracto en piedra"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Torso Abstracto</span>
+          <span class="gallery-overlay-year">2022 · Piedra caliza</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Obra 3 ──────────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.10s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=600&q=80"
+          alt="Relieve clásico"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Relieve Clásico</span>
+          <span class="gallery-overlay-year">2022 · Alabastro</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Obra 4 ──────────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.15s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=600&q=80"
+          alt="Cabeza romana"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Cabeza Romana</span>
+          <span class="gallery-overlay-year">2021 · Terracota</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Obra 5 ──────────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.20s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80"
+          alt="Composición geométrica"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Forma y Vacío</span>
+          <span class="gallery-overlay-year">2021 · Granito gris</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+    </div><!-- /gallery-grid escultura -->
+
+
+    <!-- ─── Separador ──────────────────────────────── -->
+    <div class="ornament my-24 reveal">
+      <span class="font-display italic text-stone-300 text-sm">·</span>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════
+         GALERÍA — RESTAURACIÓN
+    ══════════════════════════════════════════════ -->
+    <div class="mb-16 reveal">
+      <p class="section-label mb-3">Patrimonio</p>
+      <h2 class="section-title">Restauración</h2>
+    </div>
+
+    <div class="gallery-grid">
+
+      <!-- ── Proyecto 6 ───────────────────────────── -->
+      <div class="gallery-item reveal">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1548625149-720754162d01?w=600&q=80"
+          alt="Fachada restaurada"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Fachada Barroca</span>
+          <span class="gallery-overlay-year">2024 · Zaragoza</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Proyecto 7 ───────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.05s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=600&q=80"
+          alt="Columnas históricas"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Columnata Neoclásica</span>
+          <span class="gallery-overlay-year">2023 · Teruel</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Proyecto 8 ───────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.10s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=600&q=80"
+          alt="Portada de iglesia"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Portada Románica</span>
+          <span class="gallery-overlay-year">2022 · Huesca</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Proyecto 9 ───────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.15s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80"
+          alt="Interior con frescos"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Bóveda con Frescos</span>
+          <span class="gallery-overlay-year">2022 · Calatayud</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+      <!-- ── Proyecto 10 ──────────────────────────── -->
+      <div class="gallery-item reveal" style="transition-delay:0.20s">
+        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
+        <img
+          src="https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=600&q=80"
+          alt="Escudo heráldico restaurado"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-title">Escudo Heráldico</span>
+          <span class="gallery-overlay-year">2021 · Daroca</span>
+          <!-- STRIPE CHECKOUT — ver comentario en Obra 1 -->
+        </div>
+      </div>
+
+    </div><!-- /gallery-grid restauración -->
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════
+       TOUR VIRTUAL 360°
+  ══════════════════════════════════════════════════ -->
+  <section id="tour" class="px-6 md:px-16 lg:px-24 py-20 bg-stone-100">
+
+    <div class="mb-12 text-center reveal">
+      <p class="section-label mb-3">Experiencia inmersiva</p>
+      <h2 class="section-title">Tour Virtual 360°</h2>
+      <p class="mt-4 text-stone-400 text-sm max-w-md mx-auto" style="font-size:0.82rem; line-height:1.7;">
+        Arrastra para explorar el espacio. Haz scroll para acercar o alejar.
+      </p>
+    </div>
+
+    <!--
+      PANNELLUM VIEWER
+      REEMPLAZAR el valor de "panorama" en el JS de abajo con la URL
+      directa de tu imagen equirectangular 360° (Google Drive, CDN, etc.)
+      Formato Drive: https://drive.google.com/uc?export=view&id=TU_FILE_ID
+    -->
+    <div class="reveal">
+      <div id="panorama"></div>
+      <p class="tour-caption">
+        <!-- REEMPLAZAR con el título real de la obra o espacio -->
+        Taller del artista · Zaragoza, 2024
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════════════════════ -->
+  <section id="contacto" class="px-6 md:px-16 lg:px-24 py-28">
+
+    <div class="mb-16 text-center reveal">
+      <p class="section-label mb-3">Hablemos</p>
+      <h2 class="section-title">Contacto</h2>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-16 reveal" style="transition-delay:0.1s">
+
+      <!-- Instagram -->
+      <a
+        href="https://instagram.com/TU_USUARIO"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-icon-link"
+        aria-label="Instagram"
+      >
+        <!-- REEMPLAZAR href con tu perfil real de Instagram -->
+        <div class="contact-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <span class="contact-label">Instagram</span>
+      </a>
+
+      <!-- Email -->
+      <a
+        href="mailto:TU_EMAIL@dominio.com"
+        class="contact-icon-link"
+        aria-label="Email"
+      >
+        <!-- REEMPLAZAR href con tu email real -->
+        <div class="contact-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <polyline points="2,4 12,13 22,4"/>
+          </svg>
+        </div>
+        <span class="contact-label">Email</span>
+      </a>
+
+      <!-- Teléfono -->
+      <a
+        href="tel:+34600000000"
+        class="contact-icon-link"
+        aria-label="Teléfono"
+      >
+        <!-- REEMPLAZAR href con tu número real -->
+        <div class="contact-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.07 6.07l1.76-1.77a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <span class="contact-label">Teléfono</span>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════ -->
+  <footer class="py-10 px-6 text-center">
+    <p class="text-stone-300" style="font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase;">
+      <!-- REEMPLAZAR con el nombre real y año actual -->
+      © 2024 Manuel Alcántara · Escultura &amp; Restauración
+    </p>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════════════════ -->
+  <script>
+    /* ─── Navbar scroll effect ─────────────────────── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+
+    /* ─── Pannellum 360° Viewer ────────────────────── */
+    /*
+      IMAGEN 360°:
+      Reemplaza la URL en "panorama" con tu imagen equirectangular.
+      Si la imagen está en Google Drive, usa el formato:
+        https://drive.google.com/uc?export=view&id=TU_FILE_ID
+      Si el visor muestra un error de CORS, sube la imagen a GitHub junto
+      al index.html o usa un CDN propio (ej. Cloudinary, Imgur).
+    */
+    pannellum.viewer('panorama', {
+      type: 'equirectangular',
+      panorama: 'https://pannellum.org/images/alma.jpg', // ← REEMPLAZAR con tu imagen 360°
+      autoLoad: true,
+      autoRotate: -1.5,
+      compass: false,
+      showControls: true,
+      mouseZoom: true,
+      hfov: 100,
+      pitch: 0,
+      yaw: 0,
+      minHfov: 50,
+      maxHfov: 120,
+      strings: {
+        loadButtonLabel: 'Explorar espacio',
+        loadingLabel: 'Cargando…',
+        bylineLabel: '',
+        noPanoramaError: 'No se encontró la imagen 360°.',
+        fileAccessError: 'No se pudo acceder a la imagen 360°.',
+        malformedURLError: 'URL no válida.',
+        iOS8WebGLError: 'Navegador no compatible.',
+        genericWebGLError: 'WebGL no disponible.',
+        textureSizeError: 'La imagen es demasiado grande.',
+        unknownError: 'Error desconocido.',
+      },
+    });
+
+
+    /* ─── Scroll reveal (IntersectionObserver) ─────── */
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); // fire once
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    revealEls.forEach((el) => observer.observe(el));
+
+
+    /* ─── Mobile nav: close on link click ──────────── */
+    document.querySelectorAll('.nav-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        /* space for future mobile menu logic */
+      });
+    });
+  </script>
+
+</body>
+</html>
