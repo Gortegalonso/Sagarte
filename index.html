@@ -5,16 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Artista · Escultura & Restauración</title>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts: Cormorant Garamond (display) + DM Sans (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
-  <!-- Three.js CDN — unpkg evita bloqueos de Tracking Prevention en Edge/Safari -->
-  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <!--
+    Three.js via unpkg (evita bloqueos de Tracking Prevention en Edge).
+    Usamos ES Module build para compatibilidad con r150+.
+  -->
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.158.0/build/three.module.js" } }
+  </script>
 
   <script>
     tailwind.config = {
@@ -24,20 +26,6 @@
             display: ['Cormorant Garamond', 'serif'],
             body: ['DM Sans', 'sans-serif'],
           },
-          colors: {
-            stone: {
-              50:  '#F9F8F6',
-              100: '#F2F0EC',
-              200: '#E5E0D8',
-              300: '#C8BFB0',
-              400: '#A99D8E',
-              500: '#8C7D6C',
-              600: '#6E6050',
-              700: '#504438',
-              800: '#332B22',
-              900: '#1A1410',
-            },
-          },
         },
       },
     };
@@ -46,7 +34,6 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
       background-color: #F9F8F6;
       color: #1A1410;
@@ -55,43 +42,32 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Navbar ────────────────────────────────────── */
-    #navbar { transition: background 0.4s ease, box-shadow 0.4s ease; }
+    /* Navbar */
+    #navbar { transition: background .4s, box-shadow .4s; }
     #navbar.scrolled {
-      background: rgba(249,248,246,0.95);
+      background: rgba(249,248,246,.95);
       backdrop-filter: blur(8px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+      box-shadow: 0 1px 0 rgba(0,0,0,.06);
     }
     .nav-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #504438;
-      text-decoration: none;
-      padding-bottom: 2px;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.25s ease, color 0.25s ease;
+      font-size: .75rem; font-weight: 400;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: #504438; text-decoration: none;
+      padding-bottom: 2px; border-bottom: 1px solid transparent;
+      transition: border-color .25s, color .25s;
     }
     .nav-link:hover { color: #1A1410; border-bottom-color: #1A1410; }
 
-    /* ─── Hero ──────────────────────────────────────── */
+    /* Hero */
     .hero-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
       font-size: clamp(3.5rem, 10vw, 9rem);
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      color: #1A1410;
+      line-height: .95; letter-spacing: -.02em; color: #1A1410;
     }
     .hero-tagline {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-style: italic;
-      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-style: italic; font-size: clamp(1.1rem, 2.5vw, 1.6rem);
       color: #6E6050;
-      letter-spacing: 0.01em;
     }
     .hero-line {
       width: 1px; height: 80px;
@@ -99,154 +75,86 @@
       margin: 0 auto;
     }
 
-    /* ─── Section titles ────────────────────────────── */
+    /* Titles */
     .section-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: #A99D8E;
+      font-size: .65rem; font-weight: 500;
+      letter-spacing: .25em; text-transform: uppercase; color: #A99D8E;
     }
     .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.1;
-      color: #1A1410;
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; color: #1A1410;
     }
 
-    /* ─── Gallery grid ──────────────────────────────── */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    /* .gallery-item → preparado para botón Stripe (ver comentario HTML) */
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      background: #E5E0D8;
-      cursor: pointer;
-      aspect-ratio: 3/4;
-    }
-    .gallery-item img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s ease;
-      filter: saturate(0.85);
-    }
+    /* Gallery grid */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1.5rem; }
+    .gallery-item { position: relative; overflow: hidden; background: #E5E0D8; cursor: pointer; aspect-ratio: 3/4; }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .7s cubic-bezier(.25,.46,.45,.94), filter .5s; filter: saturate(.85); }
     .gallery-item:hover img { transform: scale(1.04); filter: saturate(1); }
     .gallery-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(26,20,16,0.75) 0%, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      display: flex; flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
+      position:absolute; inset:0;
+      background: linear-gradient(to top,rgba(26,20,16,.75) 0%,transparent 55%);
+      opacity:0; transition: opacity .4s;
+      display:flex; flex-direction:column; justify-content:flex-end; padding:1.5rem;
     }
-    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-item:hover .gallery-overlay { opacity:1; }
     .gallery-overlay-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300; font-size: 1.2rem;
-      color: #F9F8F6; line-height: 1.2;
-      transform: translateY(8px);
-      transition: transform 0.4s ease 0.05s;
+      font-family:'Cormorant Garamond',serif; font-weight:300; font-size:1.2rem;
+      color:#F9F8F6; line-height:1.2;
+      transform:translateY(8px); transition:transform .4s ease .05s;
     }
-    .gallery-item:hover .gallery-overlay-title { transform: translateY(0); }
+    .gallery-item:hover .gallery-overlay-title { transform:translateY(0); }
     .gallery-overlay-year {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem; font-weight: 400;
-      letter-spacing: 0.1em; color: #C8BFB0;
-      margin-top: 0.25rem;
-      transform: translateY(8px);
-      transition: transform 0.4s ease 0.08s;
+      font-size:.7rem; letter-spacing:.1em; color:#C8BFB0; margin-top:.25rem;
+      transform:translateY(8px); transition:transform .4s ease .08s;
     }
-    .gallery-item:hover .gallery-overlay-year { transform: translateY(0); }
-    /* Clase reservada para Stripe Checkout (futura integración) */
-    .buy-btn-placeholder { /* activar con Stripe */ }
+    .gallery-item:hover .gallery-overlay-year { transform:translateY(0); }
+    .buy-btn-placeholder { /* reservado para Stripe */ }
 
-    /* ─── Divider ────────────────────────────────────── */
-    .ornament {
-      display: flex; align-items: center; gap: 1rem; color: #C8BFB0;
-    }
-    .ornament::before, .ornament::after {
-      content: ''; flex: 1; height: 1px; background: #E5E0D8;
-    }
+    /* Divider */
+    .ornament { display:flex; align-items:center; gap:1rem; }
+    .ornament::before,.ornament::after { content:''; flex:1; height:1px; background:#E5E0D8; }
 
-    /* ─── Galería Virtual 3D ─────────────────────────── */
+    /* Galería 3D */
     #gallery3d-wrap {
-      position: relative; width: 100%;
-      background: #1a1614; border-radius: 4px; overflow: hidden;
-      user-select: none;
+      position:relative; width:100%;
+      background:#1a1614; border-radius:4px; overflow:hidden; user-select:none;
     }
-    #gallery3d {
-      display: block; width: 100%; height: 560px;
-      cursor: grab; touch-action: none;
-    }
-    #gallery3d:active { cursor: grabbing; }
-    @media (max-width: 640px) { #gallery3d { height: 320px; } }
-
+    #gallery3d { display:block; width:100%; height:560px; cursor:grab; touch-action:none; }
+    #gallery3d:active { cursor:grabbing; }
+    @media(max-width:640px){ #gallery3d{ height:320px; } }
     #gallery3d-info {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 14px 20px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.7));
-      color: #e5e0d8;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px; pointer-events: none;
-      min-height: 44px;
+      position:absolute; bottom:0; left:0; right:0;
+      padding:14px 20px;
+      background:linear-gradient(transparent,rgba(0,0,0,.7));
+      color:#e5e0d8; font-family:'DM Sans',sans-serif; font-size:13px;
+      pointer-events:none; min-height:44px;
     }
     #gallery3d-hint {
-      position: absolute; top: 14px; right: 16px;
-      color: rgba(200,191,176,0.5);
-      font-size: 10px; font-family: 'DM Sans', sans-serif;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      pointer-events: none;
+      position:absolute; top:14px; right:16px;
+      color:rgba(200,191,176,.5); font-size:10px; font-family:'DM Sans',sans-serif;
+      letter-spacing:.16em; text-transform:uppercase; pointer-events:none;
     }
 
-    /* ─── Contact ────────────────────────────────────── */
-    .contact-icon-link {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 0.6rem;
-      text-decoration: none; color: #504438;
-      transition: color 0.25s ease;
-    }
-    .contact-icon-link:hover { color: #1A1410; }
-    .contact-icon-circle {
-      width: 52px; height: 52px;
-      border: 1px solid #C8BFB0; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.25s ease, background 0.25s ease;
-    }
-    .contact-icon-link:hover .contact-icon-circle {
-      border-color: #504438; background: #F2F0EC;
-    }
-    .contact-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem; font-weight: 500;
-      letter-spacing: 0.15em; text-transform: uppercase;
-    }
+    /* Contact */
+    .contact-icon-link { display:flex; flex-direction:column; align-items:center; gap:.6rem; text-decoration:none; color:#504438; transition:color .25s; }
+    .contact-icon-link:hover { color:#1A1410; }
+    .contact-icon-circle { width:52px; height:52px; border:1px solid #C8BFB0; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color .25s,background .25s; }
+    .contact-icon-link:hover .contact-icon-circle { border-color:#504438; background:#F2F0EC; }
+    .contact-label { font-size:.7rem; font-weight:500; letter-spacing:.15em; text-transform:uppercase; }
 
-    /* ─── Footer ─────────────────────────────────────── */
-    footer { border-top: 1px solid #E5E0D8; }
+    footer { border-top:1px solid #E5E0D8; }
 
-    /* ─── Scroll reveal ──────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* Reveal */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s,transform .7s; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════════════
-       NAVEGACIÓN
-  ══════════════════════════════════════════════════ -->
+  <!-- NAVBAR -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
-    <a href="#hero" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:#504438;text-decoration:none;">
-      <!-- REEMPLAZAR: nombre corto del artista -->
+    <a href="#hero" style="font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#504438;text-decoration:none;">
+      <!-- REEMPLAZAR: nombre corto -->
       M. Alcántara
     </a>
     <div class="flex items-center gap-8">
@@ -256,219 +164,127 @@
     </div>
   </nav>
 
-
-  <!-- ══════════════════════════════════════════════════
-       HERO
-  ══════════════════════════════════════════════════ -->
+  <!-- HERO -->
   <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16 relative">
-
-    <!-- Grain texture sutil -->
-    <div class="absolute inset-0 pointer-events-none" style="background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/><feColorMatrix type=%22saturate%22 values=%220%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%220.035%22/></svg>');opacity:0.6;"></div>
-
     <p class="section-label mb-8 reveal">Escultura &amp; Restauración de Edificios</p>
-
-    <h1 class="hero-name reveal" style="transition-delay:0.1s">
-      <!-- REEMPLAZAR: nombre completo del artista -->
+    <h1 class="hero-name reveal" style="transition-delay:.1s">
+      <!-- REEMPLAZAR: nombre completo -->
       Manuel<br/>Alcántara
     </h1>
-
-    <p class="hero-tagline mt-6 max-w-md reveal" style="transition-delay:0.2s">
-      <!-- REEMPLAZAR: frase de impacto del artista -->
+    <p class="hero-tagline mt-6 max-w-md reveal" style="transition-delay:.2s">
+      <!-- REEMPLAZAR: frase de impacto -->
       La piedra no miente. Solo aguarda quien sepa escucharla.
     </p>
-
-    <div class="hero-line mt-16 reveal" style="transition-delay:0.3s"></div>
-
-    <a href="#trabajos" class="mt-8 reveal"
-       style="transition-delay:0.4s;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#A99D8E;text-decoration:none;">
+    <div class="hero-line mt-16 reveal" style="transition-delay:.3s"></div>
+    <a href="#trabajos" class="mt-8 reveal" style="transition-delay:.4s;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#A99D8E;text-decoration:none;">
       Ver trabajos ↓
     </a>
   </section>
 
-
-  <!-- ══════════════════════════════════════════════════
-       GALERÍA — ESCULTURA
-  ══════════════════════════════════════════════════ -->
+  <!-- GALERÍA ESCULTURA -->
   <section id="trabajos" class="px-6 md:px-16 lg:px-24 py-28">
-
     <div class="mb-16 reveal">
       <p class="section-label mb-3">Colección</p>
       <h2 class="section-title">Escultura</h2>
     </div>
-
     <div class="gallery-grid">
-
-      <!-- ── Obra 1 ─────────────────────────── -->
       <div class="gallery-item reveal">
-        <!--
-          IMAGEN: sustituir src por tu enlace de Google Drive:
-          https://drive.google.com/uc?export=view&id=TU_FILE_ID
-        -->
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"
-             alt="Figura en mármol blanco" loading="lazy" />
+        <!-- REEMPLAZAR src: https://drive.google.com/uc?export=view&id=TU_FILE_ID -->
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Figura en mármol" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Figura en Mármol</span>
           <span class="gallery-overlay-year">2023 · Mármol de Macael</span>
-          <!--
-            ══ STRIPE CHECKOUT — BOTÓN DE COMPRA FUTURO ══
-            Descomentar cuando esté lista la integración con Stripe:
-            <button class="buy-btn-placeholder mt-3 px-4 py-2 bg-stone-50 text-stone-900
-                           text-xs tracking-widest uppercase hover:bg-white transition">
-              Adquirir obra
-            </button>
-          -->
+          <!-- STRIPE: <button class="buy-btn-placeholder ...">Adquirir obra</button> -->
         </div>
       </div>
-
-      <!-- ── Obra 2 ─────────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.05s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=600&q=80"
-             alt="Torso abstracto en piedra" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.05s">
+        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=600&q=80" alt="Torso abstracto" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Torso Abstracto</span>
           <span class="gallery-overlay-year">2022 · Piedra caliza</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Obra 3 ─────────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.10s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=600&q=80"
-             alt="Relieve clásico" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.10s">
+        <img src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=600&q=80" alt="Relieve clásico" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Relieve Clásico</span>
           <span class="gallery-overlay-year">2022 · Alabastro</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Obra 4 ─────────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.15s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=600&q=80"
-             alt="Cabeza romana" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.15s">
+        <img src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=600&q=80" alt="Cabeza romana" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Cabeza Romana</span>
           <span class="gallery-overlay-year">2021 · Terracota</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Obra 5 ─────────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.20s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80"
-             alt="Composición geométrica" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.20s">
+        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80" alt="Composición" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Forma y Vacío</span>
           <span class="gallery-overlay-year">2021 · Granito gris</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
+    </div>
 
-    </div><!-- /gallery escultura -->
-
-    <!-- Separador -->
     <div class="ornament my-24 reveal">
       <span style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C8BFB0;">·</span>
     </div>
 
-    <!-- ══════════════════════════════════════════════
-         GALERÍA — RESTAURACIÓN
-    ══════════════════════════════════════════════ -->
+    <!-- GALERÍA RESTAURACIÓN -->
     <div class="mb-16 reveal">
       <p class="section-label mb-3">Patrimonio</p>
       <h2 class="section-title">Restauración</h2>
     </div>
-
     <div class="gallery-grid">
-
-      <!-- ── Proyecto 6 ──────────────────────── -->
       <div class="gallery-item reveal">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1548625149-720754162d01?w=600&q=80"
-             alt="Fachada restaurada" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1548625149-720754162d01?w=600&q=80" alt="Fachada" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Fachada Barroca</span>
           <span class="gallery-overlay-year">2024 · Zaragoza</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Proyecto 7 ──────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.05s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=600&q=80"
-             alt="Columnas históricas" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.05s">
+        <img src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=600&q=80" alt="Columnas" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Columnata Neoclásica</span>
           <span class="gallery-overlay-year">2023 · Teruel</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Proyecto 8 ──────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.10s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=600&q=80"
-             alt="Portada de iglesia" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.10s">
+        <img src="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=600&q=80" alt="Portada" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Portada Románica</span>
           <span class="gallery-overlay-year">2022 · Huesca</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Proyecto 9 ──────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.15s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80"
-             alt="Interior con frescos" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.15s">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Bóveda" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Bóveda con Frescos</span>
           <span class="gallery-overlay-year">2022 · Calatayud</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-      <!-- ── Proyecto 10 ─────────────────────── -->
-      <div class="gallery-item reveal" style="transition-delay:0.20s">
-        <!-- IMAGEN: Reemplazar src con enlace de Google Drive -->
-        <img src="https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=600&q=80"
-             alt="Escudo heráldico restaurado" loading="lazy" />
+      <div class="gallery-item reveal" style="transition-delay:.20s">
+        <img src="https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=600&q=80" alt="Escudo" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Escudo Heráldico</span>
           <span class="gallery-overlay-year">2021 · Daroca</span>
-          <!-- STRIPE CHECKOUT — ver comentario Obra 1 -->
         </div>
       </div>
-
-    </div><!-- /gallery restauración -->
+    </div>
   </section>
 
-
-  <!-- ══════════════════════════════════════════════════
-       GALERÍA VIRTUAL 3D
-  ══════════════════════════════════════════════════ -->
+  <!-- GALERÍA VIRTUAL 3D -->
   <section id="tour" style="background:#F2F0EC;" class="px-6 md:px-16 lg:px-24 py-20">
-
     <div class="mb-12 text-center reveal">
       <p class="section-label mb-3">Experiencia inmersiva</p>
       <h2 class="section-title">Galería Virtual</h2>
-      <p class="mt-4 max-w-md mx-auto" style="font-size:0.82rem;line-height:1.7;color:#A99D8E;">
+      <p class="mt-4 max-w-md mx-auto" style="font-size:.82rem;line-height:1.7;color:#A99D8E;">
         Haz clic y arrastra para girar la vista 360° dentro de la sala.
       </p>
     </div>
-
     <div class="reveal">
-      <!--
-        GALERÍA 3D — Three.js
-        Las URLs de las imágenes se configuran en el array WORKS del JS (al final del archivo).
-        Busca el comentario "REEMPLAZAR url:" para sustituir cada placeholder de Unsplash
-        por tu enlace de Google Drive: https://drive.google.com/uc?export=view&id=TU_FILE_ID
-      -->
       <div id="gallery3d-wrap">
         <canvas id="gallery3d"></canvas>
         <div id="gallery3d-hint">Arrastrar · Girar</div>
@@ -477,43 +293,33 @@
           <span id="g3d-year"  style="opacity:.5;margin-left:8px;"></span>
         </div>
       </div>
-
-      <!-- REEMPLAZAR: título del espacio real -->
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:#A99D8E;text-align:center;margin-top:1.25rem;letter-spacing:0.03em;">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:#A99D8E;text-align:center;margin-top:1.25rem;letter-spacing:.03em;">
+        <!-- REEMPLAZAR: nombre del espacio real -->
         Taller del artista · Zaragoza, 2024
       </p>
     </div>
-
   </section>
 
-
-  <!-- ══════════════════════════════════════════════════
-       CONTACTO
-  ══════════════════════════════════════════════════ -->
+  <!-- CONTACTO -->
   <section id="contacto" class="px-6 md:px-16 lg:px-24 py-28">
-
     <div class="mb-16 text-center reveal">
       <p class="section-label mb-3">Hablemos</p>
       <h2 class="section-title">Contacto</h2>
     </div>
-
-    <div class="flex flex-wrap justify-center gap-16 reveal" style="transition-delay:0.1s">
-
-      <!-- Instagram — REEMPLAZAR href -->
-      <a href="https://instagram.com/TU_USUARIO" target="_blank" rel="noopener noreferrer"
-         class="contact-icon-link" aria-label="Instagram">
+    <div class="flex flex-wrap justify-center gap-16 reveal" style="transition-delay:.1s">
+      <a href="https://instagram.com/TU_USUARIO" target="_blank" rel="noopener" class="contact-icon-link" aria-label="Instagram">
+        <!-- REEMPLAZAR href -->
         <div class="contact-icon-circle">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
             <circle cx="12" cy="12" r="4"/>
-            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+            <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
           </svg>
         </div>
         <span class="contact-label">Instagram</span>
       </a>
-
-      <!-- Email — REEMPLAZAR href -->
       <a href="mailto:TU_EMAIL@dominio.com" class="contact-icon-link" aria-label="Email">
+        <!-- REEMPLAZAR href -->
         <div class="contact-icon-circle">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -522,9 +328,8 @@
         </div>
         <span class="contact-label">Email</span>
       </a>
-
-      <!-- Teléfono — REEMPLAZAR href -->
       <a href="tel:+34600000000" class="contact-icon-link" aria-label="Teléfono">
+        <!-- REEMPLAZAR href -->
         <div class="contact-icon-circle">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.07 6.07l1.76-1.77a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -532,304 +337,267 @@
         </div>
         <span class="contact-label">Teléfono</span>
       </a>
-
     </div>
   </section>
 
-
-  <!-- ══════════════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════════════ -->
+  <!-- FOOTER -->
   <footer class="py-10 px-6 text-center">
-    <p style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:#C8BFB0;">
-      <!-- REEMPLAZAR: nombre y año -->
+    <p style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#C8BFB0;">
+      <!-- REEMPLAZAR -->
       © 2024 Manuel Alcántara · Escultura &amp; Restauración
     </p>
   </footer>
 
-
-  <!-- ══════════════════════════════════════════════════
-       JAVASCRIPT
-  ══════════════════════════════════════════════════ -->
+  <!-- JAVASCRIPT -->
   <script>
-
-    /* ─── Navbar scroll ──────────────────────────────── */
+    /* Navbar */
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-    });
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
 
-    /* ─── Scroll reveal ──────────────────────────────── */
-    document.querySelectorAll('.reveal').forEach(el => {
-      new IntersectionObserver((entries, obs) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }).observe(el);
-    });
+    /* Reveal */
+    document.querySelectorAll('.reveal').forEach(el =>
+      new IntersectionObserver((es, ob) => {
+        es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); ob.unobserve(e.target); } });
+      }, { threshold:.12, rootMargin:'0px 0px -40px 0px' }).observe(el)
+    );
+  </script>
 
+  <!--
+    ══════════════════════════════════════════════════════
+    GALERÍA VIRTUAL 3D
+    Usa ES Modules para compatibilidad con Three.js r150+
+    y evitar el warning de deprecación del build clásico.
 
-    /* ════════════════════════════════════════════════════
-       GALERÍA VIRTUAL 3D — Three.js
-       ════════════════════════════════════════════════════
+    IMÁGENES: edita el array WORKS más abajo.
+    Para añadir más obras copia una entrada y ajusta
+    title, year, wall, offset y url.
 
-       CONFIGURACIÓN DE OBRAS:
-       Edita el array WORKS para personalizar cada cuadro.
-         title   → nombre de la obra (aparece en el tooltip inferior)
-         year    → subtítulo (categoría · año · lugar)
-         wall    → pared donde se cuelga: "front" | "back" | "left" | "right"
-         offset  → posición en metros a lo largo de la pared (positivo / negativo)
-         url     → URL de la imagen.
-                   REEMPLAZAR url: por tu Google Drive:
-                   https://drive.google.com/uc?export=view&id=TU_FILE_ID
-    ════════════════════════════════════════════════════ */
+    Formato Google Drive:
+    https://drive.google.com/uc?export=view&id=TU_FILE_ID
+    ══════════════════════════════════════════════════════
+  -->
+  <script type="module">
+    import * as THREE from 'three';
 
-    /*
-      Imágenes servidas directamente desde el repositorio GitHub (rama main).
-      Para añadir más obras, duplica una entrada y ajusta title, year, wall, offset y url.
-      URLs raw de GitHub: https://raw.githubusercontent.com/USUARIO/REPO/main/ARCHIVO
-    */
+    /* ── Obras ─────────────────────────────────────────
+       wall:   "front" | "back" | "left" | "right"
+       offset: posición en metros a lo largo de la pared
+    ─────────────────────────────────────────────────── */
     const WORKS = [
-      /* ── Pared frontal ── */
-      { title:'Obra I',  year:'Escultura',    wall:'front', offset: 0,
+      { title:'Obra I',   year:'Escultura',    wall:'front', offset: 0,
         url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/1.jpg' },
-      /* ── Pared trasera ── */
-      { title:'Obra II', year:'Escultura',    wall:'back',  offset: 0,
+      { title:'Obra II',  year:'Escultura',    wall:'back',  offset: 0,
         url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/2.jpg' },
-      /* ── Pared izquierda ── */
-      { title:'Obra III',year:'Restauración', wall:'left',  offset: 0,
+      { title:'Obra III', year:'Restauración', wall:'left',  offset: 0,
         url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/3.jpg' },
-      /* ── Pared derecha ── */
-      { title:'Obra IV', year:'Restauración', wall:'right', offset: 0,
+      { title:'Obra IV',  year:'Restauración', wall:'right', offset: 0,
         url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/4.jpg' },
     ];
 
-    /* ─── Inicialización Three.js ─────────────────────── */
-    (function initGallery3D() {
+    /* ── Setup ─────────────────────────────────────── */
+    const canvas   = document.getElementById('gallery3d');
+    const wrap     = document.getElementById('gallery3d-wrap');
+    const g3dTitle = document.getElementById('g3d-title');
+    const g3dYear  = document.getElementById('g3d-year');
 
-      const canvas   = document.getElementById('gallery3d');
-      const wrap     = document.getElementById('gallery3d-wrap');
-      const g3dTitle = document.getElementById('g3d-title');
-      const g3dYear  = document.getElementById('g3d-year');
+    const W = wrap.offsetWidth;
+    const H = canvas.offsetHeight || 560;
 
-      function getSize() {
-        return { w: wrap.offsetWidth, h: parseInt(getComputedStyle(canvas).height) || 560 };
-      }
-      const { w, h } = getSize();
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x1a1614);
 
-      /* Renderer */
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-      renderer.setSize(w, h);
-      renderer.setClearColor(0x1a1614);
+    const scene  = new THREE.Scene();
+    scene.fog    = new THREE.FogExp2(0x1a1614, 0.048);
 
-      /* Escena */
-      const scene = new THREE.Scene();
-      scene.fog   = new THREE.FogExp2(0x1a1614, 0.048);
+    const camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
+    camera.position.set(0, 1.65, 0);
 
-      /* Cámara (punto de vista fijo en el centro de la sala) */
-      const camera = new THREE.PerspectiveCamera(65, w / h, 0.1, 50);
-      camera.position.set(0, 1.65, 0);
+    /* ── Luces ─────────────────────────────────────── */
+    scene.add(new THREE.AmbientLight(0xfff5e8, 0.30));
+    [[-5,4.8,-5],[5,4.8,-5],[-5,4.8,5],[5,4.8,5],[0,5.1,0]].forEach(([x,y,z],i) => {
+      const pt = new THREE.PointLight(0xfff8f0, i===4?1.1:.45, 15, 1.8);
+      pt.position.set(x,y,z); scene.add(pt);
+    });
 
-      /* Luces */
-      scene.add(new THREE.AmbientLight(0xfff5e8, 0.30));
-      [[-5,4.8,-5],[5,4.8,-5],[-5,4.8,5],[5,4.8,5],[0,5.1,0]].forEach(([x,y,z],i) => {
-        const pt = new THREE.PointLight(0xfff8f0, i === 4 ? 1.1 : 0.45, 15, 1.8);
-        pt.position.set(x, y, z);
-        scene.add(pt);
-      });
+    /* ── Sala ──────────────────────────────────────── */
+    const RW=14, RH=5.5, RD=14;
 
-      /* ── Sala ──────────────────────────────────── */
-      const RW = 14, RH = 5.5, RD = 14;
+    // Suelo
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(RW, RD),
+      new THREE.MeshStandardMaterial({ color:0x221c18, roughness:.95 })
+    );
+    floor.rotation.x = -Math.PI/2;
+    scene.add(floor);
 
-      /* Suelo */
-      const floorMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(RW, RD),
-        new THREE.MeshStandardMaterial({ color: 0x221c18, roughness: 0.95 })
+    // Parqué
+    const pMat = new THREE.MeshStandardMaterial({ color:0x181210 });
+    for(let i=-6.6; i<=6.6; i+=.55){
+      const ln = new THREE.Mesh(new THREE.PlaneGeometry(.018, RD), pMat);
+      ln.rotation.x = -Math.PI/2;
+      ln.position.set(i, .001, 0);
+      scene.add(ln);
+    }
+
+    // Techo
+    const ceil = new THREE.Mesh(
+      new THREE.PlaneGeometry(RW, RD),
+      new THREE.MeshStandardMaterial({ color:0x141210, side:THREE.BackSide })
+    );
+    ceil.rotation.x = Math.PI/2;
+    ceil.position.y = RH;
+    scene.add(ceil);
+
+    // Paredes
+    const wMat = new THREE.MeshStandardMaterial({ color:0xf0ede8, roughness:.97, side:THREE.BackSide });
+    [[RW,RH, 0,    RH/2,-RD/2, 0         ],
+     [RW,RH, 0,    RH/2, RD/2, Math.PI   ],
+     [RD,RH,-RW/2, RH/2, 0,    Math.PI/2 ],
+     [RD,RH, RW/2, RH/2, 0,   -Math.PI/2 ]
+    ].forEach(([gw,gh,x,y,z,ry]) => {
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(gw,gh), wMat);
+      m.position.set(x,y,z); m.rotation.y=ry; scene.add(m);
+    });
+
+    // Rodapiés
+    const rMat = new THREE.MeshStandardMaterial({ color:0xc0b49e, roughness:.6 });
+    [[RW, 0,          -RD/2+.025,  0         ],
+     [RW, 0,           RD/2-.025,  Math.PI   ],
+     [RD,-RW/2+.025,  0,           Math.PI/2 ],
+     [RD, RW/2-.025,  0,          -Math.PI/2 ]
+    ].forEach(([len,x,z,ry]) => {
+      const r = new THREE.Mesh(new THREE.BoxGeometry(len,.12,.05), rMat);
+      r.position.set(x,.06,z); r.rotation.y=ry; scene.add(r);
+    });
+
+    // Focos
+    function spot(sx,sy,sz,tx,ty,tz){
+      const s = new THREE.SpotLight(0xfff3d0,1.7,9,Math.PI/10,.35,1.6);
+      s.position.set(sx,sy,sz); s.target.position.set(tx,ty,tz);
+      scene.add(s); scene.add(s.target);
+    }
+    [-4.5,-1.5,1.5,4.5].forEach(x => spot(x,5.1,-RD/2+1.8, x,2.55,-RD/2+.08));
+    [-4,0,4].forEach(x             => spot(x,5.1, RD/2-1.8, x,2.55, RD/2-.08));
+    [-2,2].forEach(z               => spot(-RW/2+1.8,5.1,z, -RW/2+.08,2.55,z));
+    spot(RW/2-1.8,5.1,0, RW/2-.08,2.55,0);
+
+    /* ── Cuadros ───────────────────────────────────── */
+    const loader    = new THREE.TextureLoader();
+    const artGroups = [];
+    const FW=1.65, FH=2.05, FD=.035;
+    const fMat = new THREE.MeshStandardMaterial({ color:0xcfc4aa, roughness:.55, metalness:.1 });
+    const bMat = new THREE.MeshStandardMaterial({ color:0x18100c });
+
+    function buildFrame(tex, title, year, px,py,pz, ry){
+      const g = new THREE.Group();
+      g.position.set(px,py,pz);
+      g.rotation.y = ry;
+
+      const pic = new THREE.Mesh(
+        new THREE.PlaneGeometry(FW,FH),
+        new THREE.MeshStandardMaterial({ map:tex, roughness:.65 })
       );
-      floorMesh.rotation.x = -Math.PI / 2;
-      scene.add(floorMesh);
+      pic.position.z = FD+.002;
+      g.add(pic);
 
-      /* Parqué */
-      const parqMat = new THREE.MeshStandardMaterial({ color: 0x181210 });
-      for (let i = -6.6; i <= 6.6; i += 0.55) {
-        const ln = new THREE.Mesh(new THREE.PlaneGeometry(0.018, RD), parqMat);
-        ln.rotation.x = -Math.PI / 2;
-        ln.position.set(i, 0.001, 0);
-        scene.add(ln);
-      }
-
-      /* Techo */
-      const ceil = new THREE.Mesh(
-        new THREE.PlaneGeometry(RW, RD),
-        new THREE.MeshStandardMaterial({ color: 0x141210, side: THREE.BackSide })
-      );
-      ceil.rotation.x = Math.PI / 2;
-      ceil.position.y = RH;
-      scene.add(ceil);
-
-      /* Paredes */
-      const wallMat = new THREE.MeshStandardMaterial({ color: 0xf0ede8, roughness: 0.97, side: THREE.BackSide });
-      function addWall(gw, gh, x, y, z, ry) {
-        const m = new THREE.Mesh(new THREE.PlaneGeometry(gw, gh), wallMat);
-        m.position.set(x, y, z); m.rotation.y = ry;
-        scene.add(m);
-      }
-      addWall(RW, RH,  0,     RH/2, -RD/2,  0);
-      addWall(RW, RH,  0,     RH/2,  RD/2,  Math.PI);
-      addWall(RD, RH, -RW/2, RH/2,  0,      Math.PI/2);
-      addWall(RD, RH,  RW/2, RH/2,  0,     -Math.PI/2);
-
-      /* Rodapiés */
-      const rodMat = new THREE.MeshStandardMaterial({ color: 0xc0b49e, roughness: 0.6 });
-      function addRod(len, x, z, ry) {
-        const r = new THREE.Mesh(new THREE.BoxGeometry(len, 0.12, 0.05), rodMat);
-        r.position.set(x, 0.06, z); r.rotation.y = ry;
-        scene.add(r);
-      }
-      addRod(RW,  0,          -RD/2+0.025,  0);
-      addRod(RW,  0,           RD/2-0.025,  Math.PI);
-      addRod(RD, -RW/2+0.025,  0,           Math.PI/2);
-      addRod(RD,  RW/2-0.025,  0,          -Math.PI/2);
-
-      /* Focos sobre cuadros */
-      function addSpot(sx, sy, sz, tx, ty, tz) {
-        const s = new THREE.SpotLight(0xfff3d0, 1.7, 9, Math.PI/10, 0.35, 1.6);
-        s.position.set(sx, sy, sz);
-        s.target.position.set(tx, ty, tz);
-        scene.add(s); scene.add(s.target);
-      }
-      [-4.5,-1.5,1.5,4.5].forEach(x => addSpot(x, 5.1, -RD/2+1.8,  x, 2.55, -RD/2+0.08));
-      [-4,0,4].forEach(x             => addSpot(x, 5.1,  RD/2-1.8,  x, 2.55,  RD/2-0.08));
-      [-2,2].forEach(z               => addSpot(-RW/2+1.8, 5.1, z, -RW/2+0.08, 2.55, z));
-      addSpot(RW/2-1.8, 5.1, 0,  RW/2-0.08, 2.55, 0);
-
-      /* ── Cuadros ────────────────────────────────── */
-      const loader    = new THREE.TextureLoader();
-      const artGroups = [];
-      const FW = 1.65, FH = 2.05, FD = 0.035;
-      const frameMat  = new THREE.MeshStandardMaterial({ color: 0xcfc4aa, roughness: 0.55, metalness: 0.1 });
-      const backMat   = new THREE.MeshStandardMaterial({ color: 0x18100c });
-
-      function buildFrame(tex, title, year, px, py, pz, ry) {
-        const grp = new THREE.Group();
-        grp.position.set(px, py, pz);
-        grp.rotation.y = ry;
-
-        /* Imagen */
-        const pic = new THREE.Mesh(
-          new THREE.PlaneGeometry(FW, FH),
-          new THREE.MeshStandardMaterial({ map: tex, roughness: 0.65 })
-        );
-        pic.position.z = FD + 0.002;
-        grp.add(pic);
-
-        /* Cuatro listones del marco */
-        [
-          [FW+0.14, 0.055,  0,           FH/2+0.028],
-          [FW+0.14, 0.055,  0,          -(FH/2+0.028)],
-          [0.055,   FH,     FW/2+0.028,  0],
-          [0.055,   FH,    -(FW/2+0.028),0],
-        ].forEach(([bw, bh, bx, by]) => {
-          const bar = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, FD+0.008), frameMat);
-          bar.position.set(bx, by, (FD+0.008)/2);
-          grp.add(bar);
-        });
-
-        /* Fondo */
-        const back = new THREE.Mesh(new THREE.BoxGeometry(FW+0.14, FH+0.055, FD), backMat);
-        back.position.z = FD / 2;
-        grp.add(back);
-
-        grp.userData = { title, year };
-        scene.add(grp);
-        artGroups.push(grp);
-      }
-
-      WORKS.forEach(w => {
-        loader.load(w.url, tex => {
-          tex.colorSpace = THREE.SRGBColorSpace;
-          const yPos = 2.55, gap = 0.055;
-          if      (w.wall === 'front') buildFrame(tex, w.title, w.year,  w.offset, yPos, -(RD/2-gap),  0);
-          else if (w.wall === 'back')  buildFrame(tex, w.title, w.year,  w.offset, yPos,   RD/2-gap,   Math.PI);
-          else if (w.wall === 'left')  buildFrame(tex, w.title, w.year, -(RW/2-gap), yPos, w.offset,  Math.PI/2);
-          else                         buildFrame(tex, w.title, w.year,   RW/2-gap,  yPos, w.offset, -Math.PI/2);
-        });
+      [[FW+.14,.055, 0,         FH/2+.028],
+       [FW+.14,.055, 0,        -FH/2-.028],
+       [.055,  FH,   FW/2+.028, 0        ],
+       [.055,  FH,  -FW/2-.028, 0        ]
+      ].forEach(([bw,bh,bx,by]) => {
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(bw,bh,FD+.008), fMat);
+        bar.position.set(bx,by,(FD+.008)/2); g.add(bar);
       });
 
-      /* ── Raycaster (hover sobre cuadros) ─────────── */
-      const raycaster = new THREE.Raycaster();
-      const mouse2    = new THREE.Vector2(-9, -9);
+      const back = new THREE.Mesh(new THREE.BoxGeometry(FW+.14,FH+.055,FD), bMat);
+      back.position.z = FD/2; g.add(back);
 
-      canvas.addEventListener('mousemove', e => {
-        if (isDragging) return;
-        const rect = canvas.getBoundingClientRect();
-        mouse2.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
-        mouse2.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
+      g.userData = { title, year };
+      scene.add(g);
+      artGroups.push(g);
+    }
+
+    WORKS.forEach(w => {
+      loader.load(w.url, tex => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const yPos=2.55, gap=.055;
+        if      (w.wall==='front') buildFrame(tex,w.title,w.year,  w.offset,yPos,-(RD/2-gap), 0);
+        else if (w.wall==='back')  buildFrame(tex,w.title,w.year,  w.offset,yPos,  RD/2-gap,  Math.PI);
+        else if (w.wall==='left')  buildFrame(tex,w.title,w.year,-(RW/2-gap),yPos, w.offset,  Math.PI/2);
+        else                       buildFrame(tex,w.title,w.year,  RW/2-gap, yPos, w.offset, -Math.PI/2);
       });
+    });
 
-      function checkHover() {
-        raycaster.setFromCamera(mouse2, camera);
-        const children = [];
-        artGroups.forEach(g => g.children.forEach(c => children.push(c)));
-        const hits = raycaster.intersectObjects(children);
-        if (hits.length && hits[0].object.parent?.userData?.title) {
-          const d = hits[0].object.parent.userData;
-          g3dTitle.textContent = d.title;
-          g3dYear.textContent  = d.year;
-          canvas.style.cursor  = 'pointer';
-        } else {
-          g3dTitle.textContent = '';
-          g3dYear.textContent  = '';
-          canvas.style.cursor  = isDragging ? 'grabbing' : 'grab';
-        }
+    /* ── Hover ─────────────────────────────────────── */
+    const raycaster = new THREE.Raycaster();
+    const mouse2    = new THREE.Vector2(-9,-9);
+
+    canvas.addEventListener('mousemove', e => {
+      if(isDragging) return;
+      const r = canvas.getBoundingClientRect();
+      mouse2.x =  ((e.clientX-r.left)/r.width )*2-1;
+      mouse2.y = -((e.clientY-r.top) /r.height)*2+1;
+    });
+
+    function checkHover(){
+      raycaster.setFromCamera(mouse2, camera);
+      const ch=[];
+      artGroups.forEach(g => g.children.forEach(c => ch.push(c)));
+      const hits = raycaster.intersectObjects(ch);
+      if(hits.length && hits[0].object.parent?.userData?.title){
+        const d = hits[0].object.parent.userData;
+        g3dTitle.textContent = d.title;
+        g3dYear.textContent  = d.year;
+        canvas.style.cursor  = 'pointer';
+      } else {
+        g3dTitle.textContent = '';
+        g3dYear.textContent  = '';
+        canvas.style.cursor  = isDragging ? 'grabbing' : 'grab';
       }
+    }
 
-      /* ── Drag (girar vista) ───────────────────────── */
-      let yaw = 0, pitch = 0;
-      let isDragging = false, lastX = 0, lastY = 0;
-      let autoOn = true;
-      const AUTO = 0.00025;
+    /* ── Drag ──────────────────────────────────────── */
+    let yaw=0, pitch=0, isDragging=false, lx=0, ly=0, autoOn=true;
 
-      function startDrag(x, y) { isDragging = true; lastX = x; lastY = y; autoOn = false; }
-      function endDrag()        { isDragging = false; }
-      function moveDrag(x, y)   {
-        if (!isDragging) return;
-        yaw   -= (x - lastX) * 0.0042;
-        pitch -= (y - lastY) * 0.0030;
-        pitch  = Math.max(-0.52, Math.min(0.52, pitch));
-        lastX = x; lastY = y;
-      }
+    canvas.addEventListener('mousedown',  e => { isDragging=true; lx=e.clientX; ly=e.clientY; autoOn=false; });
+    window.addEventListener('mouseup',    () => isDragging=false);
+    window.addEventListener('mousemove',  e => {
+      if(!isDragging) return;
+      yaw   -= (e.clientX-lx)*.0042; pitch -= (e.clientY-ly)*.003;
+      pitch  = Math.max(-.52, Math.min(.52, pitch));
+      lx=e.clientX; ly=e.clientY;
+    });
+    canvas.addEventListener('touchstart', e => { isDragging=true; lx=e.touches[0].clientX; ly=e.touches[0].clientY; autoOn=false; }, {passive:true});
+    canvas.addEventListener('touchend',   () => isDragging=false);
+    canvas.addEventListener('touchmove',  e => {
+      if(!isDragging) return;
+      yaw   -= (e.touches[0].clientX-lx)*.0042; pitch -= (e.touches[0].clientY-ly)*.003;
+      pitch  = Math.max(-.52, Math.min(.52, pitch));
+      lx=e.touches[0].clientX; ly=e.touches[0].clientY;
+    }, {passive:true});
 
-      canvas.addEventListener('mousedown',  e => startDrag(e.clientX, e.clientY));
-      window.addEventListener('mouseup',    endDrag);
-      window.addEventListener('mousemove',  e => moveDrag(e.clientX, e.clientY));
-      canvas.addEventListener('touchstart', e => startDrag(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-      canvas.addEventListener('touchend',   endDrag);
-      canvas.addEventListener('touchmove',  e => moveDrag(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+    /* ── Resize ────────────────────────────────────── */
+    window.addEventListener('resize', () => {
+      const nw=wrap.offsetWidth, nh=canvas.offsetHeight||560;
+      renderer.setSize(nw,nh);
+      camera.aspect=nw/nh;
+      camera.updateProjectionMatrix();
+    });
 
-      /* ── Resize ───────────────────────────────────── */
-      window.addEventListener('resize', () => {
-        const { w: nw, h: nh } = getSize();
-        renderer.setSize(nw, nh);
-        camera.aspect = nw / nh;
-        camera.updateProjectionMatrix();
-      });
-
-      /* ── Loop ─────────────────────────────────────── */
-      function animate() {
-        requestAnimationFrame(animate);
-        if (!isDragging && autoOn) yaw += AUTO;
-        checkHover();
-        camera.rotation.order = 'YXZ';
-        camera.rotation.y = yaw;
-        camera.rotation.x = pitch;
-        renderer.render(scene, camera);
-      }
-      animate();
-
-    })(); /* fin initGallery3D */
-
+    /* ── Loop ──────────────────────────────────────── */
+    function animate(){
+      requestAnimationFrame(animate);
+      if(!isDragging && autoOn) yaw += .00025;
+      checkHover();
+      camera.rotation.order='YXZ';
+      camera.rotation.y=yaw;
+      camera.rotation.x=pitch;
+      renderer.render(scene,camera);
+    }
+    animate();
   </script>
+
 </body>
 </html>
