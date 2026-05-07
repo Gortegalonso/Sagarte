@@ -144,12 +144,52 @@
 
     footer { border-top:1px solid #E5E0D8; }
 
+    /* ── Lightbox ───────────────────────────────── */
+    #lightbox {
+      display:none; position:fixed; inset:0; z-index:1000;
+      background:rgba(10,8,6,.92); backdrop-filter:blur(6px);
+      align-items:center; justify-content:center;
+      cursor:zoom-out;
+    }
+    #lightbox.open { display:flex; }
+    #lightbox img {
+      max-width:90vw; max-height:88vh;
+      object-fit:contain;
+      box-shadow:0 30px 80px rgba(0,0,0,.6);
+      animation: lbIn .25s cubic-bezier(.25,.46,.45,.94);
+    }
+    @keyframes lbIn {
+      from { opacity:0; transform:scale(.95); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    #lightbox-caption {
+      position:absolute; bottom:28px; left:0; right:0; text-align:center;
+      font-family:'Cormorant Garamond',serif; font-style:italic;
+      font-size:1rem; color:rgba(200,191,176,.8); pointer-events:none;
+      letter-spacing:.04em;
+    }
+    #lightbox-close {
+      position:absolute; top:20px; right:24px;
+      font-size:1.6rem; color:rgba(200,191,176,.6);
+      cursor:pointer; line-height:1;
+      transition:color .2s;
+      background:none; border:none; padding:4px;
+    }
+    #lightbox-close:hover { color:#e5e0d8; }
+
     /* Reveal */
     .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s,transform .7s; }
     .reveal.visible { opacity:1; transform:translateY(0); }
   </style>
 </head>
 <body>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+    <button id="lightbox-close" aria-label="Cerrar">  <!-- NAVBAR -->times;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <p id="lightbox-caption"></p>
+  </div>
 
   <!-- NAVBAR -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
@@ -190,7 +230,7 @@
     <div class="gallery-grid">
       <div class="gallery-item reveal">
         <!-- REEMPLAZAR src: https://drive.google.com/uc?export=view&id=TU_FILE_ID -->
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Figura en mármol" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=90" data-title="Figura en Mármol" data-year="2023 · Mármol de Macael" data-full="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=95" alt="Figura en mármol" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Figura en Mármol</span>
           <span class="gallery-overlay-year">2023 · Mármol de Macael</span>
@@ -198,28 +238,28 @@
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.05s">
-        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=600&q=80" alt="Torso abstracto" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1200&q=90" data-title="Torso Abstracto" data-year="2022 · Piedra caliza" data-full="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1800&q=95" alt="Torso abstracto" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Torso Abstracto</span>
           <span class="gallery-overlay-year">2022 · Piedra caliza</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.10s">
-        <img src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=600&q=80" alt="Relieve clásico" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1200&q=90" data-title="Relieve Clásico" data-year="2022 · Alabastro" data-full="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1800&q=95" alt="Relieve clásico" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Relieve Clásico</span>
           <span class="gallery-overlay-year">2022 · Alabastro</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.15s">
-        <img src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=600&q=80" alt="Cabeza romana" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=1200&q=90" data-title="Cabeza Romana" data-year="2021 · Terracota" data-full="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=1800&q=95" alt="Cabeza romana" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Cabeza Romana</span>
           <span class="gallery-overlay-year">2021 · Terracota</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.20s">
-        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80" alt="Composición" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&q=90" data-title="Forma y Vacío" data-year="2021 · Granito gris" data-full="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1800&q=95" alt="Composición" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Forma y Vacío</span>
           <span class="gallery-overlay-year">2021 · Granito gris</span>
@@ -238,35 +278,35 @@
     </div>
     <div class="gallery-grid">
       <div class="gallery-item reveal">
-        <img src="https://images.unsplash.com/photo-1548625149-720754162d01?w=600&q=80" alt="Fachada" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1548625149-720754162d01?w=1200&q=90" data-title="Fachada Barroca" data-year="2024 · Zaragoza" data-full="https://images.unsplash.com/photo-1548625149-720754162d01?w=1800&q=95" alt="Fachada" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Fachada Barroca</span>
           <span class="gallery-overlay-year">2024 · Zaragoza</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.05s">
-        <img src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=600&q=80" alt="Columnas" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=1200&q=90" data-title="Columnata Neoclásica" data-year="2023 · Teruel" data-full="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=1800&q=95" alt="Columnas" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Columnata Neoclásica</span>
           <span class="gallery-overlay-year">2023 · Teruel</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.10s">
-        <img src="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=600&q=80" alt="Portada" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=1200&q=90" data-title="Portada Románica" data-year="2022 · Huesca" data-full="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=1800&q=95" alt="Portada" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Portada Románica</span>
           <span class="gallery-overlay-year">2022 · Huesca</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.15s">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Bóveda" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=90" data-title="Bóveda con Frescos" data-year="2022 · Calatayud" data-full="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800&q=95" alt="Bóveda" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Bóveda con Frescos</span>
           <span class="gallery-overlay-year">2022 · Calatayud</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.20s">
-        <img src="https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=600&q=80" alt="Escudo" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=1200&q=90" data-title="Escudo Heráldico" data-year="2021 · Daroca" data-full="https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=1800&q=95" alt="Escudo" loading="lazy"/>
         <div class="gallery-overlay">
           <span class="gallery-overlay-title">Escudo Heráldico</span>
           <span class="gallery-overlay-year">2021 · Daroca</span>
@@ -486,7 +526,7 @@
     /* ── Cuadros ───────────────────────────────────── */
     const loader    = new THREE.TextureLoader();
     const artGroups = [];
-    const FW=1.65, FH=2.05, FD=.035;
+    const FW=2.8, FH=3.5, FD=.04;
     const fMat = new THREE.MeshStandardMaterial({ color:0xcfc4aa, roughness:.55, metalness:.1 });
     const bMat = new THREE.MeshStandardMaterial({ color:0x18100c });
 
@@ -597,6 +637,40 @@
       renderer.render(scene,camera);
     }
     animate();
+  </script>
+
+
+  <script>
+    /* ── Lightbox ─────────────────────────────────── */
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lightbox-img');
+    const lbCap   = document.getElementById('lightbox-caption');
+    const lbClose = document.getElementById('lightbox-close');
+
+    function openLightbox(src, title, year) {
+      lbImg.src = src;
+      lbImg.alt = title;
+      lbCap.textContent = title + (year ? '  ·  ' + year : '');
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+    /* Attach to all gallery items */
+    document.querySelectorAll('.gallery-item img[data-full]').forEach(img => {
+      img.closest('.gallery-item').style.cursor = 'zoom-in';
+      img.closest('.gallery-item').addEventListener('click', () => {
+        openLightbox(img.dataset.full, img.dataset.title, img.dataset.year);
+      });
+    });
   </script>
 
 </body>
