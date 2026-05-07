@@ -584,31 +584,24 @@
                    https://drive.google.com/uc?export=view&id=TU_FILE_ID
     ════════════════════════════════════════════════════ */
 
+    /*
+      Imágenes servidas directamente desde el repositorio GitHub (rama main).
+      Para añadir más obras, duplica una entrada y ajusta title, year, wall, offset y url.
+      URLs raw de GitHub: https://raw.githubusercontent.com/USUARIO/REPO/main/ARCHIVO
+    */
     const WORKS = [
-      /* ── Pared frontal (la que ves al entrar) ── */
-      { title:'Figura en Mármol',     year:'2023 · Escultura',    wall:'front', offset:-4.5,
-        url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80' },  // REEMPLAZAR url
-      { title:'Torso Abstracto',      year:'2022 · Escultura',    wall:'front', offset:-1.5,
-        url:'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=500&q=80' }, // REEMPLAZAR url
-      { title:'Relieve Clásico',      year:'2022 · Escultura',    wall:'front', offset: 1.5,
-        url:'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=500&q=80' },  // REEMPLAZAR url
-      { title:'Cabeza Romana',        year:'2021 · Escultura',    wall:'front', offset: 4.5,
-        url:'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=500&q=80' }, // REEMPLAZAR url
+      /* ── Pared frontal ── */
+      { title:'Obra I',  year:'Escultura',    wall:'front', offset: 0,
+        url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/1.jpg' },
       /* ── Pared trasera ── */
-      { title:'Forma y Vacío',        year:'2021 · Escultura',    wall:'back',  offset:-4,
-        url:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&q=80' }, // REEMPLAZAR url
-      { title:'Fachada Barroca',      year:'2024 · Restauración', wall:'back',  offset: 0,
-        url:'https://images.unsplash.com/photo-1548625149-720754162d01?w=500&q=80' },  // REEMPLAZAR url
-      { title:'Columnata Neoclásica', year:'2023 · Restauración', wall:'back',  offset: 4,
-        url:'https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=500&q=80' }, // REEMPLAZAR url
+      { title:'Obra II', year:'Escultura',    wall:'back',  offset: 0,
+        url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/2.jpg' },
       /* ── Pared izquierda ── */
-      { title:'Portada Románica',     year:'2022 · Restauración', wall:'left',  offset:-2,
-        url:'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=500&q=80' }, // REEMPLAZAR url
-      { title:'Bóveda con Frescos',   year:'2022 · Restauración', wall:'left',  offset: 2,
-        url:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80' },  // REEMPLAZAR url
+      { title:'Obra III',year:'Restauración', wall:'left',  offset: 0,
+        url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/3.jpg' },
       /* ── Pared derecha ── */
-      { title:'Escudo Heráldico',     year:'2021 · Restauración', wall:'right', offset: 0,
-        url:'https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?w=500&q=80' }, // REEMPLAZAR url
+      { title:'Obra IV', year:'Restauración', wall:'right', offset: 0,
+        url:'https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/4.jpg' },
     ];
 
     /* ─── Inicialización Three.js ─────────────────────── */
