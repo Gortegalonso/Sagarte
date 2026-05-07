@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
-  <!-- Three.js CDN (galería virtual 3D) -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <!-- Three.js CDN — unpkg evita bloqueos de Tracking Prevention en Edge/Safari -->
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -643,11 +643,12 @@
       const RW = 14, RH = 5.5, RD = 14;
 
       /* Suelo */
-      scene.add(Object.assign(
-        new THREE.Mesh(new THREE.PlaneGeometry(RW, RD),
-                       new THREE.MeshStandardMaterial({ color: 0x221c18, roughness: 0.95 })),
-        { rotation: new THREE.Euler(-Math.PI/2, 0, 0) }
-      ));
+      const floorMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(RW, RD),
+        new THREE.MeshStandardMaterial({ color: 0x221c18, roughness: 0.95 })
+      );
+      floorMesh.rotation.x = -Math.PI / 2;
+      scene.add(floorMesh);
 
       /* Parqué */
       const parqMat = new THREE.MeshStandardMaterial({ color: 0x181210 });
