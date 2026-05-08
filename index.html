@@ -35,8 +35,8 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background-color: #F9F8F6;
-      color: #1A1410;
+      background-color: #FFFFFF;
+      color: #111111;
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
@@ -45,49 +45,49 @@
     /* Navbar */
     #navbar { transition: background .4s, box-shadow .4s; }
     #navbar.scrolled {
-      background: rgba(249,248,246,.95);
+      background: rgba(255,255,255,.96);
       backdrop-filter: blur(8px);
       box-shadow: 0 1px 0 rgba(0,0,0,.06);
     }
     .nav-link {
       font-size: .75rem; font-weight: 400;
       letter-spacing: .15em; text-transform: uppercase;
-      color: #504438; text-decoration: none;
+      color: #333333; text-decoration: none;
       padding-bottom: 2px; border-bottom: 1px solid transparent;
       transition: border-color .25s, color .25s;
     }
-    .nav-link:hover { color: #1A1410; border-bottom-color: #1A1410; }
+    .nav-link:hover { color: #111111; border-bottom-color: #111111; }
 
     /* Hero */
     .hero-name {
       font-family: 'Cormorant Garamond', serif; font-weight: 300;
       font-size: clamp(3.5rem, 10vw, 9rem);
-      line-height: .95; letter-spacing: -.02em; color: #1A1410;
+      line-height: .95; letter-spacing: -.02em; color: #111111;
     }
     .hero-tagline {
       font-family: 'Cormorant Garamond', serif; font-weight: 300;
       font-style: italic; font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-      color: #6E6050;
+      color: #555555;
     }
     .hero-line {
       width: 1px; height: 80px;
-      background: linear-gradient(to bottom, transparent, #C8BFB0, transparent);
+      background: linear-gradient(to bottom, transparent, #CCCCCC, transparent);
       margin: 0 auto;
     }
 
     /* Titles */
     .section-label {
       font-size: .65rem; font-weight: 500;
-      letter-spacing: .25em; text-transform: uppercase; color: #A99D8E;
+      letter-spacing: .25em; text-transform: uppercase; color: #999999;
     }
     .section-title {
       font-family: 'Cormorant Garamond', serif; font-weight: 300;
-      font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; color: #1A1410;
+      font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; color: #111111;
     }
 
     /* Gallery grid */
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1.5rem; }
-    .gallery-item { position: relative; overflow: hidden; background: #E5E0D8; cursor: pointer; aspect-ratio: 3/4; }
+    .gallery-item { position: relative; overflow: hidden; background: #F0F0F0; cursor: pointer; aspect-ratio: 3/4; }
     .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .7s cubic-bezier(.25,.46,.45,.94), filter .5s; filter: saturate(.85); }
     .gallery-item:hover img { transform: scale(1.04); filter: saturate(1); }
     .gallery-overlay {
@@ -99,12 +99,12 @@
     .gallery-item:hover .gallery-overlay { opacity:1; }
     .gallery-overlay-title {
       font-family:'Cormorant Garamond',serif; font-weight:300; font-size:1.2rem;
-      color:#F9F8F6; line-height:1.2;
+      color:#FFFFFF; line-height:1.2;
       transform:translateY(8px); transition:transform .4s ease .05s;
     }
     .gallery-item:hover .gallery-overlay-title { transform:translateY(0); }
     .gallery-overlay-year {
-      font-size:.7rem; letter-spacing:.1em; color:#C8BFB0; margin-top:.25rem;
+      font-size:.7rem; letter-spacing:.1em; color:#CCCCCC; margin-top:.25rem;
       transform:translateY(8px); transition:transform .4s ease .08s;
     }
     .gallery-item:hover .gallery-overlay-year { transform:translateY(0); }
@@ -112,7 +112,7 @@
 
     /* Divider */
     .ornament { display:flex; align-items:center; gap:1rem; }
-    .ornament::before,.ornament::after { content:''; flex:1; height:1px; background:#E5E0D8; }
+    .ornament::before,.ornament::after { content:''; flex:1; height:1px; background:#F0F0F0; }
 
     /* Galería 3D */
     #gallery3d-wrap {
@@ -136,13 +136,13 @@
     }
 
     /* Contact */
-    .contact-icon-link { display:flex; flex-direction:column; align-items:center; gap:.6rem; text-decoration:none; color:#504438; transition:color .25s; }
-    .contact-icon-link:hover { color:#1A1410; }
-    .contact-icon-circle { width:52px; height:52px; border:1px solid #C8BFB0; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color .25s,background .25s; }
-    .contact-icon-link:hover .contact-icon-circle { border-color:#504438; background:#F2F0EC; }
+    .contact-icon-link { display:flex; flex-direction:column; align-items:center; gap:.6rem; text-decoration:none; color:#333333; transition:color .25s; }
+    .contact-icon-link:hover { color:#111111; }
+    .contact-icon-circle { width:52px; height:52px; border:1px solid #CCCCCC; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color .25s,background .25s; }
+    .contact-icon-link:hover .contact-icon-circle { border-color:#333333; background:#F5F5F5; }
     .contact-label { font-size:.7rem; font-weight:500; letter-spacing:.15em; text-transform:uppercase; }
 
-    footer { border-top:1px solid #E5E0D8; }
+    footer { border-top:1px solid #E8E8E8; }
 
     /* ── Lightbox ───────────────────────────────── */
     #lightbox {
@@ -187,15 +187,14 @@
   <!-- LIGHTBOX -->
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
     <button id="lightbox-close" aria-label="Cerrar">  <!-- NAVBAR -->times;</button>
-    <img id="lightbox-img" src="" alt="" />
+    <img id="lightbox-img" src="" alt="Restauración III" />
     <p id="lightbox-caption"></p>
   </div>
 
   <!-- NAVBAR -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
-    <a href="#hero" style="font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#504438;text-decoration:none;">
-      <!-- REEMPLAZAR: nombre corto -->
-      M. Alcántara
+    <a href="#hero" style="font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#333333;text-decoration:none;">
+      Blanca Sagasti
     </a>
     <div class="flex items-center gap-8">
       <a href="#trabajos" class="nav-link">Trabajos</a>
@@ -208,15 +207,11 @@
   <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16 relative">
     <p class="section-label mb-8 reveal">Escultura &amp; Restauración de Edificios</p>
     <h1 class="hero-name reveal" style="transition-delay:.1s">
-      <!-- REEMPLAZAR: nombre completo -->
-      Manuel<br/>Alcántara
+      Blanca<br/>Sagasti
     </h1>
-    <p class="hero-tagline mt-6 max-w-md reveal" style="transition-delay:.2s">
-      <!-- REEMPLAZAR: frase de impacto -->
-      La piedra no miente. Solo aguarda quien sepa escucharla.
-    </p>
+    
     <div class="hero-line mt-16 reveal" style="transition-delay:.3s"></div>
-    <a href="#trabajos" class="mt-8 reveal" style="transition-delay:.4s;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#A99D8E;text-decoration:none;">
+    <a href="#trabajos" class="mt-8 reveal" style="transition-delay:.4s;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#999999;text-decoration:none;">
       Ver trabajos ↓
     </a>
   </section>
@@ -230,25 +225,25 @@
     <div class="gallery-grid">
       <div class="gallery-item reveal">
         <!-- REEMPLAZAR src: https://drive.google.com/uc?export=view&id=TU_FILE_ID -->
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=90" data-title="Figura en Mármol" data-year="2023 · Mármol de Macael" data-full="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=95" alt="Figura en mármol" loading="lazy"/>
+        <img src="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Escultura%201.jpg" data-title="Escultura I" data-year="Escultura" data-full="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Escultura%201.jpg" alt="Escultura I" loading="lazy"/>
         <div class="gallery-overlay">
-          <span class="gallery-overlay-title">Figura en Mármol</span>
-          <span class="gallery-overlay-year">2023 · Mármol de Macael</span>
+          <span class="gallery-overlay-title">Escultura I</span>
+          <span class="gallery-overlay-year">Escultura</span>
           <!-- STRIPE: <button class="buy-btn-placeholder ...">Adquirir obra</button> -->
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.05s">
-        <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1200&q=90" data-title="Torso Abstracto" data-year="2022 · Piedra caliza" data-full="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1800&q=95" alt="Torso abstracto" loading="lazy"/>
+        <img src="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Escultura%202.jpg" data-title="Escultura II" data-year="Escultura" data-full="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Escultura%202.jpg" alt="Escultura II" loading="lazy"/>
         <div class="gallery-overlay">
-          <span class="gallery-overlay-title">Torso Abstracto</span>
-          <span class="gallery-overlay-year">2022 · Piedra caliza</span>
+          <span class="gallery-overlay-title">Escultura II</span>
+          <span class="gallery-overlay-year">Escultura</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.10s">
-        <img src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1200&q=90" data-title="Relieve Clásico" data-year="2022 · Alabastro" data-full="https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1800&q=95" alt="Relieve clásico" loading="lazy"/>
+        <img src="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Escultura%203.jpg" data-title="Escultura III" data-year="Escultura" data-full="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Escultura%203.jpg" alt="Escultura III" loading="lazy"/>
         <div class="gallery-overlay">
-          <span class="gallery-overlay-title">Relieve Clásico</span>
-          <span class="gallery-overlay-year">2022 · Alabastro</span>
+          <span class="gallery-overlay-title">Escultura III</span>
+          <span class="gallery-overlay-year">Escultura</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.15s">
@@ -268,7 +263,7 @@
     </div>
 
     <div class="ornament my-24 reveal">
-      <span style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#C8BFB0;">·</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#CCCCCC;">·</span>
     </div>
 
     <!-- GALERÍA RESTAURACIÓN -->
@@ -278,24 +273,24 @@
     </div>
     <div class="gallery-grid">
       <div class="gallery-item reveal">
-        <img src="https://images.unsplash.com/photo-1548625149-720754162d01?w=1200&q=90" data-title="Fachada Barroca" data-year="2024 · Zaragoza" data-full="https://images.unsplash.com/photo-1548625149-720754162d01?w=1800&q=95" alt="Fachada" loading="lazy"/>
+        <img src="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Restauracion%201.jpg" data-title="Restauración I" data-year="Restauración" data-full="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Restauracion%201.jpg" alt="Restauración I" loading="lazy"/>
         <div class="gallery-overlay">
-          <span class="gallery-overlay-title">Fachada Barroca</span>
-          <span class="gallery-overlay-year">2024 · Zaragoza</span>
+          <span class="gallery-overlay-title">Restauración I</span>
+          <span class="gallery-overlay-year">Restauración</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.05s">
-        <img src="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=1200&q=90" data-title="Columnata Neoclásica" data-year="2023 · Teruel" data-full="https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=1800&q=95" alt="Columnas" loading="lazy"/>
+        <img src="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Restauracion%202.jpg" data-title="Restauración II" data-year="Restauración" data-full="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Restauracion%202.jpg" alt="Restauración II" loading="lazy"/>
         <div class="gallery-overlay">
-          <span class="gallery-overlay-title">Columnata Neoclásica</span>
-          <span class="gallery-overlay-year">2023 · Teruel</span>
+          <span class="gallery-overlay-title">Restauración II</span>
+          <span class="gallery-overlay-year">Restauración</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.10s">
-        <img src="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=1200&q=90" data-title="Portada Románica" data-year="2022 · Huesca" data-full="https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=1800&q=95" alt="Portada" loading="lazy"/>
+        <img src="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Restauracion%203.jpg" data-title="Restauración III" data-year="Restauración" data-full="https://raw.githubusercontent.com/Gortegalonso/Sagarte/main/Restauracion%203.jpg" alt="Restauración III" loading="lazy"/>
         <div class="gallery-overlay">
-          <span class="gallery-overlay-title">Portada Románica</span>
-          <span class="gallery-overlay-year">2022 · Huesca</span>
+          <span class="gallery-overlay-title">Restauración III</span>
+          <span class="gallery-overlay-year">Restauración</span>
         </div>
       </div>
       <div class="gallery-item reveal" style="transition-delay:.15s">
@@ -316,11 +311,11 @@
   </section>
 
   <!-- GALERÍA VIRTUAL 3D -->
-  <section id="tour" style="background:#F2F0EC;" class="px-6 md:px-16 lg:px-24 py-20">
+  <section id="tour" style="background:#F7F7F7;" class="px-6 md:px-16 lg:px-24 py-20">
     <div class="mb-12 text-center reveal">
       <p class="section-label mb-3">Experiencia inmersiva</p>
       <h2 class="section-title">Galería Virtual</h2>
-      <p class="mt-4 max-w-md mx-auto" style="font-size:.82rem;line-height:1.7;color:#A99D8E;">
+      <p class="mt-4 max-w-md mx-auto" style="font-size:.82rem;line-height:1.7;color:#999999;">
         Haz clic y arrastra para girar la vista 360° dentro de la sala.
       </p>
     </div>
@@ -333,7 +328,7 @@
           <span id="g3d-year"  style="opacity:.5;margin-left:8px;"></span>
         </div>
       </div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:#A99D8E;text-align:center;margin-top:1.25rem;letter-spacing:.03em;">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:#999999;text-align:center;margin-top:1.25rem;letter-spacing:.03em;">
         <!-- REEMPLAZAR: nombre del espacio real -->
         Taller del artista · Zaragoza, 2024
       </p>
@@ -382,9 +377,9 @@
 
   <!-- FOOTER -->
   <footer class="py-10 px-6 text-center">
-    <p style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#C8BFB0;">
+    <p style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#CCCCCC;">
       <!-- REEMPLAZAR -->
-      © 2024 Manuel Alcántara · Escultura &amp; Restauración
+      © 2024 Blanca Sagasti · Escultura &amp; Restauración
     </p>
   </footer>
 
@@ -446,10 +441,10 @@
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(W, H);
-    renderer.setClearColor(0x1a1614);
+    renderer.setClearColor(0x0d0d0d);
 
     const scene  = new THREE.Scene();
-    scene.fog    = new THREE.FogExp2(0x1a1614, 0.048);
+    scene.fog    = new THREE.FogExp2(0x0d0d0d, 0.048);
 
     const camera = new THREE.PerspectiveCamera(65, W / H, 0.1, 50);
     camera.position.set(0, 1.65, 0);
@@ -467,13 +462,13 @@
     // Suelo
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(RW, RD),
-      new THREE.MeshStandardMaterial({ color:0x221c18, roughness:.95 })
+      new THREE.MeshStandardMaterial({ color:0x1a1a1a, roughness:.95 })
     );
     floor.rotation.x = -Math.PI/2;
     scene.add(floor);
 
     // Parqué
-    const pMat = new THREE.MeshStandardMaterial({ color:0x181210 });
+    const pMat = new THREE.MeshStandardMaterial({ color:0x111111 });
     for(let i=-6.6; i<=6.6; i+=.55){
       const ln = new THREE.Mesh(new THREE.PlaneGeometry(.018, RD), pMat);
       ln.rotation.x = -Math.PI/2;
@@ -484,14 +479,14 @@
     // Techo
     const ceil = new THREE.Mesh(
       new THREE.PlaneGeometry(RW, RD),
-      new THREE.MeshStandardMaterial({ color:0x141210, side:THREE.BackSide })
+      new THREE.MeshStandardMaterial({ color:0x0d0d0d, side:THREE.BackSide })
     );
     ceil.rotation.x = Math.PI/2;
     ceil.position.y = RH;
     scene.add(ceil);
 
     // Paredes
-    const wMat = new THREE.MeshStandardMaterial({ color:0xf0ede8, roughness:.97, side:THREE.BackSide });
+    const wMat = new THREE.MeshStandardMaterial({ color:0xfafafa, roughness:.97, side:THREE.BackSide });
     [[RW,RH, 0,    RH/2,-RD/2, 0         ],
      [RW,RH, 0,    RH/2, RD/2, Math.PI   ],
      [RD,RH,-RW/2, RH/2, 0,    Math.PI/2 ],
@@ -502,7 +497,7 @@
     });
 
     // Rodapiés
-    const rMat = new THREE.MeshStandardMaterial({ color:0xc0b49e, roughness:.6 });
+    const rMat = new THREE.MeshStandardMaterial({ color:0xd0d0d0, roughness:.6 });
     [[RW, 0,          -RD/2+.025,  0         ],
      [RW, 0,           RD/2-.025,  Math.PI   ],
      [RD,-RW/2+.025,  0,           Math.PI/2 ],
@@ -527,8 +522,8 @@
     const loader    = new THREE.TextureLoader();
     const artGroups = [];
     const FW=2.8, FH=3.5, FD=.04;
-    const fMat = new THREE.MeshStandardMaterial({ color:0xcfc4aa, roughness:.55, metalness:.1 });
-    const bMat = new THREE.MeshStandardMaterial({ color:0x18100c });
+    const fMat = new THREE.MeshStandardMaterial({ color:0xe0e0e0, roughness:.55, metalness:.1 });
+    const bMat = new THREE.MeshStandardMaterial({ color:0x0a0a0a });
 
     function buildFrame(tex, title, year, px,py,pz, ry){
       const g = new THREE.Group();
