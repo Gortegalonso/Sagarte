@@ -184,9 +184,36 @@
 </head>
 <body>
 
-  <!-- LIGHTBOX -->
+  <!-- LIGHTBOX con panel lateral -->
   <div id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
-    <button id="lightbox-close" aria-label="Cerrar">  <!-- NAVBAR -->times;</button>
+
+    <!-- Botón cerrar grande -->
+    <button id="lightbox-close" aria-label="Cerrar">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Contenedor imagen + panel -->
+    <div id="lightbox-inner">
+      <!-- Imagen -->
+      <div id="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="" />
+      </div>
+      <!-- Panel lateral de texto -->
+      <div id="lightbox-panel">
+        <h3 id="lb-panel-title"></h3>
+        <p  id="lb-panel-year"></p>
+        <div id="lb-panel-text"></div>
+        <p id="lb-panel-loading" style="color:#aaa;font-style:italic;font-size:.85rem;">Cargando texto…</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVBAR -->times;</button>
     <img id="lightbox-img" src="" alt="Restauración III" />
     <p id="lightbox-caption"></p>
   </div>
@@ -200,6 +227,7 @@
     <div class="flex items-center gap-8">
       <a href="#trabajos" class="nav-link">Trabajos</a>
       <a href="#tour"     class="nav-link">Galería Virtual</a>
+      <a href="#noticias" class="nav-link" id="nav-noticias">Noticias</a>
       <a href="#contacto" class="nav-link">Contacto</a>
     </div>
   </nav>
@@ -363,6 +391,62 @@
     </div>
   </section>
 
+
+  <!-- ══════════════════════════════════════════════════
+       NOTICIAS (colapsable)
+       Para añadir noticias edita el array NEWS en el JS.
+  ══════════════════════════════════════════════════ -->
+  <section id="noticias" class="px-6 md:px-16 lg:px-24 py-20" style="background:#F7F7F7;">
+
+    <!-- Cabecera clicable -->
+    <button id="noticias-toggle"
+      onclick="toggleNoticias()"
+      style="
+        width:100%; background:none; border:none; cursor:pointer;
+        display:flex; align-items:center; justify-content:space-between;
+        padding:0; text-align:left;
+      "
+      aria-expanded="false"
+      aria-controls="noticias-body"
+    >
+      <div>
+        <p class="section-label mb-2">Actualidad</p>
+        <h2 class="section-title" style="margin:0;">Noticias</h2>
+      </div>
+      <!-- Chevron animado -->
+      <div id="noticias-chevron" style="
+        width:44px; height:44px; border:1px solid #CCCCCC; border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        flex-shrink:0; margin-left:1.5rem;
+        transition: background .25s, border-color .25s, transform .35s;
+      ">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="#888" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </button>
+
+    <!-- Cuerpo colapsable -->
+    <div id="noticias-body"
+      style="
+        overflow:hidden; max-height:0;
+        transition: max-height .5s cubic-bezier(.25,.46,.45,.94), opacity .4s ease;
+        opacity:0;
+      "
+    >
+      <div id="noticias-grid" style="
+        display:grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+        gap:1.5rem;
+        margin-top:2.5rem;
+      ">
+        <!-- Las tarjetas se generan desde el array NEWS en JS -->
+      </div>
+    </div>
+
+  </section>
+
   <!-- CONTACTO -->
   <section id="contacto" class="px-6 md:px-16 lg:px-24 py-28">
     <div class="mb-16 text-center reveal">
@@ -384,6 +468,21 @@
       </div>
     </div>
     <div class="flex flex-wrap justify-center gap-16 reveal" style="transition-delay:.1s">
+      
+      <!-- LinkedIn — REEMPLAZAR href con tu perfil real -->
+      <a href="https://linkedin.com/in/TU_PERFIL" target="_blank" rel="noopener" class="contact-icon-link" aria-label="LinkedIn">
+        <div class="contact-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="4"/>
+            <line x1="8" y1="11" x2="8" y2="16"/>
+            <line x1="8" y1="8" x2="8" y2="8.3"/>
+            <path d="M12 16v-5"/>
+            <path d="M12 13a2.5 2.5 0 0 1 5 0v3"/>
+          </svg>
+        </div>
+        <span class="contact-label">LinkedIn</span>
+      </a>
+
       <a href="https://instagram.com/TU_USUARIO" target="_blank" rel="noopener" class="contact-icon-link" aria-label="Instagram">
         <!-- REEMPLAZAR href -->
         <div class="contact-icon-circle">
@@ -427,18 +526,7 @@
   </footer>
 
   <!-- JAVASCRIPT -->
-  <script>
-    /* Navbar */
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
-
-    /* Reveal */
-    document.querySelectorAll('.reveal').forEach(el =>
-      new IntersectionObserver((es, ob) => {
-        es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); ob.unobserve(e.target); } });
-      }, { threshold:.12, rootMargin:'0px 0px -40px 0px' }).observe(el)
-    );
-  </script>
+  
 
   <!--
     ══════════════════════════════════════════════════════
@@ -678,20 +766,117 @@
   </script>
 
 
-  <script>
-    /* ── Lightbox ─────────────────────────────────── */
-    const lb      = document.getElementById('lightbox');
-    const lbImg   = document.getElementById('lightbox-img');
-    const lbCap   = document.getElementById('lightbox-caption');
-    const lbClose = document.getElementById('lightbox-close');
+    <script>
+    /* ── Navbar scroll ─────────────────────────────── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+
+    /* ── Scroll reveal ──────────────────────────────── */
+    document.querySelectorAll('.reveal').forEach(el =>
+      new IntersectionObserver((es, ob) => {
+        es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); ob.unobserve(e.target); } });
+      }, { threshold:.12, rootMargin:'0px 0px -40px 0px' }).observe(el)
+    );
+
+    /* ══════════════════════════════════════════════════
+       NOTICIAS — colapsable
+       Edita el array NEWS para añadir o modificar noticias.
+       Formato: { fecha, titulo, texto }
+    ══════════════════════════════════════════════════ */
+    const NEWS = [
+      /* REEMPLAZAR con noticias reales. Ejemplo:
+      {
+        fecha:  "Mayo 2025",
+        titulo: "Exposición en la Galería X",
+        texto:  "Blanca Sagasti presenta su nueva serie de esculturas en hierro en la Galería X de Zaragoza, del 10 al 30 de mayo."
+      },
+      */
+      {
+        fecha:  "2024",
+        titulo: "Próximamente",
+        texto:  "Aquí aparecerán las últimas noticias y exposiciones de Blanca Sagasti."
+      }
+    ];
+
+    (function renderNoticias() {
+      const grid = document.getElementById('noticias-grid');
+      if (!grid) return;
+      grid.innerHTML = NEWS.map(n =>
+        '<div class="noticia-card">' +
+          '<p class="noticia-fecha">' + n.fecha + '</p>' +
+          '<h3 class="noticia-titulo">' + n.titulo + '</h3>' +
+          '<p class="noticia-texto">' + n.texto + '</p>' +
+        '</div>'
+      ).join('');
+    })();
+
+    let noticiasOpen = false;
+    function toggleNoticias(forceOpen) {
+      const body    = document.getElementById('noticias-body');
+      const chevron = document.getElementById('noticias-chevron');
+      const toggle  = document.getElementById('noticias-toggle');
+      noticiasOpen  = forceOpen !== undefined ? forceOpen : !noticiasOpen;
+      if (noticiasOpen) {
+        body.style.maxHeight = (body.scrollHeight + 500) + 'px';
+        body.style.opacity   = '1';
+        chevron.style.transform   = 'rotate(180deg)';
+        chevron.style.borderColor = '#333';
+        toggle.setAttribute('aria-expanded', 'true');
+      } else {
+        body.style.maxHeight = '0';
+        body.style.opacity   = '0';
+        chevron.style.transform   = 'rotate(0deg)';
+        chevron.style.borderColor = '#CCCCCC';
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    document.getElementById('nav-noticias').addEventListener('click', function(e) {
+      e.preventDefault();
+      toggleNoticias(true);
+      setTimeout(function() {
+        document.getElementById('noticias').scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 50);
+    });
+
+    /* ══════════════════════════════════════════════════
+       LIGHTBOX con panel lateral de texto
+       El texto se carga automáticamente desde el archivo
+       .txt con el mismo nombre que la imagen en GitHub.
+       Solo necesitas subir el .txt al repositorio.
+    ══════════════════════════════════════════════════ */
+    const lb        = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lightbox-img');
+    const lbClose   = document.getElementById('lightbox-close');
+    const lbTitle   = document.getElementById('lb-panel-title');
+    const lbYear    = document.getElementById('lb-panel-year');
+    const lbText    = document.getElementById('lb-panel-text');
+    const lbLoading = document.getElementById('lb-panel-loading');
+
+    function fetchArtworkText(imgSrc) {
+      /* Reemplaza extensión de imagen por .txt */
+      var txtUrl = imgSrc.replace(/\.(jpg|JPG|jpeg|JPEG|png|PNG)$/, '.txt');
+      return fetch(txtUrl)
+        .then(function(res) { return res.ok ? res.text() : null; })
+        .catch(function() { return null; });
+    }
 
     function openLightbox(src, title, year) {
-      lbImg.src = src;
-      lbImg.alt = title;
-      lbCap.textContent = title + (year ? '  ·  ' + year : '');
+      lbImg.src  = src;
+      lbImg.alt  = title;
+      lbTitle.textContent = title;
+      lbYear.textContent  = year || '';
+      lbText.textContent  = '';
+      lbLoading.style.display = 'block';
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
+
+      fetchArtworkText(src).then(function(txt) {
+        lbLoading.style.display = 'none';
+        lbText.textContent = (txt && txt.trim()) ? txt.trim() : '';
+      });
     }
+
     function closeLightbox() {
       lb.classList.remove('open');
       document.body.style.overflow = '';
@@ -699,28 +884,30 @@
     }
 
     lbClose.addEventListener('click', closeLightbox);
-    lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 
-
-    /* Fallback: intenta extensión .JPG si .jpg falla (GitHub case-sensitive) */
-    document.querySelectorAll('.gallery-item img, #lightbox-img').forEach(img => {
+    /* Fallback .jpg -> .JPG si falla la carga */
+    document.querySelectorAll('.gallery-item img').forEach(function(img) {
       img.addEventListener('error', function() {
-        if (this.src.endsWith('.jpg') && !this.dataset.triedJpg) {
+        if (!this.dataset.triedJpg && this.src.match(/\.jpg$/)) {
           this.dataset.triedJpg = '1';
-          this.src = this.src.slice(0, -4) + '.JPG';
-          if (this.dataset.full && this.dataset.full.endsWith('.jpg')) {
-            this.dataset.full = this.dataset.full.slice(0, -4) + '.JPG';
-          }
+          var newSrc = this.src.slice(0,-4) + '.JPG';
+          this.src = newSrc;
+          if (this.dataset.full) this.dataset.full = this.dataset.full.slice(0,-4) + '.JPG';
         }
       });
     });
 
-    /* Attach to all gallery items */
-    document.querySelectorAll('.gallery-item img[data-full]').forEach(img => {
+    /* Clic en galería → lightbox */
+    document.querySelectorAll('.gallery-item img[data-full]').forEach(function(img) {
       img.closest('.gallery-item').style.cursor = 'zoom-in';
-      img.closest('.gallery-item').addEventListener('click', () => {
-        openLightbox(img.dataset.full, img.dataset.title, img.dataset.year);
+      img.closest('.gallery-item').addEventListener('click', function() {
+        openLightbox(
+          img.dataset.full || img.src,
+          img.dataset.title || img.alt,
+          img.dataset.year  || ''
+        );
       });
     });
   </script>
