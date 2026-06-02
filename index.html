@@ -169,13 +169,19 @@
       letter-spacing:.04em;
     }
     #lightbox-close {
-      position:absolute; top:20px; right:24px;
-      font-size:1.6rem; color:rgba(200,191,176,.6);
-      cursor:pointer; line-height:1;
-      transition:color .2s;
-      background:none; border:none; padding:4px;
+      position:absolute; top:14px; right:16px;
+      width:40px; height:40px;
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(200,191,176,.85);
+      cursor:pointer;
+      transition:color .2s, background .2s;
+      background:rgba(0,0,0,.5);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:50%;
+      padding:0;
+      z-index:10;
     }
-    #lightbox-close:hover { color:#e5e0d8; }
+    #lightbox-close:hover { color:#fff; background:rgba(0,0,0,.75); border-color:rgba(255,255,255,.4); }
 
     /* Reveal */
     .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s,transform .7s; }
@@ -276,20 +282,29 @@
 
     /* ── Lightbox mobile ───────────────────────────── */
     @media (max-width: 640px) {
+      #lightbox {
+        align-items:flex-start;
+        padding-top:56px; /* espacio para la X */
+        overflow-y:auto;
+      }
       #lightbox-inner {
         flex-direction:column;
         max-width:96vw;
-        max-height:92vh;
-        overflow-y:auto;
+        max-height:none;
+        overflow-y:visible;
+        margin:0 auto 2rem;
       }
-      #lightbox-img-wrap img { max-height:55vh; }
+      #lightbox-img-wrap img { max-height:60vw; min-height:180px; }
       #lightbox-panel {
         width:100%;
         padding:1.25rem 1rem;
         border-left:none;
         border-top:1px solid rgba(255,255,255,.07);
       }
-      #lightbox-close { top:10px; right:12px; }
+      #lightbox-close {
+        top:10px; right:12px;
+        width:44px; height:44px; /* más fácil de pulsar */
+      }
     }
 
     /* ── Contact & sections mobile ─────────────────── */
@@ -331,11 +346,6 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- NAVBAR -->times;</button>
-    <img id="lightbox-img" src="" alt="Restauración III" />
-    <p id="lightbox-caption"></p>
   </div>
 
   <!-- NAVBAR -->
